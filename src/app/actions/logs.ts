@@ -1,6 +1,8 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { checkAchievements as checkAchievementsPure } from "@/lib/achievements";
+import type { AchievementContext } from "@/lib/achievements";
 import type { BristolScale, Mood } from "@/lib/types";
 
 interface CreateLogInput {
@@ -32,15 +34,19 @@ export async function createLog(data: CreateLogInput): Promise<CreateLogResult> 
   }
 
   // Insert the log
-  const { error: insertError } = await supabase.from("logs").insert({
-    user_id: user.id,
-    bristol_scale: data.bristol_scale,
-    duration_seconds: data.duration_seconds,
-    mood: data.mood,
-    note: data.note,
-    lat: data.lat,
-    lng: data.lng,
-  });
+  const { data: insertedLog, error: insertError } = await supabase
+    .from("logs")
+    .insert({
+      user_id: user.id,
+      bristol_scale: data.bristol_scale,
+      duration_seconds: data.duration_seconds,
+      mood: data.mood,
+      note: data.note,
+      lat: data.lat,
+      lng: data.lng,
+    })
+    .select("logged_at")
+    .single();
 
   if (insertError) {
     throw new Error(`Failed to create log: ${insertError.message}`);
@@ -49,8 +55,14 @@ export async function createLog(data: CreateLogInput): Promise<CreateLogResult> 
   // Calculate streak
   const streak = await calculateStreak(supabase, user.id);
 
-  // Check achievements
-  const newAchievements = await checkAchievements(supabase, user.id, data);
+  // Check achievements using the pure function
+  const newAchievements = await checkAchievements(
+    supabase,
+    user.id,
+    data,
+    streak,
+    insertedLog.logged_at,
+  );
 
   // Get a random fun fact
   const funFact = await getRandomFunFact(supabase);
@@ -111,80 +123,151 @@ async function calculateStreak(
 async function checkAchievements(
   supabase: Awaited<ReturnType<typeof createClient>>,
   userId: string,
-  data: CreateLogInput
+  data: CreateLogInput,
+  currentStreak: number,
+  loggedAt: string,
 ): Promise<{ name: string; icon_emoji: string; description: string }[]> {
-  // Get all achievements
+  // Get all achievements defined in DB
   const { data: allAchievements } = await supabase
     .from("achievements")
     .select("*");
 
   if (!allAchievements) return [];
 
-  // Get user's existing achievements
-  const { data: existingAchievements } = await supabase
-    .from("user_achievements")
-    .select("achievement_id")
-    .eq("user_id", userId);
+  // Gather all context data in parallel for the pure achievement checker
+  const [
+    existingAchievementsResult,
+    logCountResult,
+    bristolValuesResult,
+    recentLogsResult,
+    friendCountResult,
+    completedChallengesResult,
+    locationLogsResult,
+  ] = await Promise.all([
+    // Existing achievements (slugs via join, or achievement_ids then map)
+    supabase
+      .from("user_achievements")
+      .select("achievement_id")
+      .eq("user_id", userId),
 
-  const existingIds = new Set(
-    (existingAchievements ?? []).map((a) => a.achievement_id)
+    // Total log count
+    supabase
+      .from("logs")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userId),
+
+    // All Bristol values logged
+    supabase
+      .from("logs")
+      .select("bristol_scale")
+      .eq("user_id", userId),
+
+    // Recent log times (last 7, for creature_of_habit and perfect_week)
+    supabase
+      .from("logs")
+      .select("logged_at")
+      .eq("user_id", userId)
+      .order("logged_at", { ascending: false })
+      .limit(30), // get more than 7 for perfect_week (needs full week coverage)
+
+    // Friend count
+    supabase
+      .from("friendships")
+      .select("*", { count: "exact", head: true })
+      .eq("status", "accepted")
+      .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`),
+
+    // Completed challenges count
+    supabase
+      .from("challenge_participants")
+      .select("challenge_id, progress, challenges!inner(target)")
+      .eq("user_id", userId)
+      .gte("progress", 0), // we'll filter completed ones below
+
+    // Logs with location data for unique location count
+    supabase
+      .from("logs")
+      .select("lat, lng")
+      .eq("user_id", userId)
+      .not("lat", "is", null)
+      .not("lng", "is", null),
+  ]);
+
+  // Map existing achievement IDs to slugs
+  const existingAchievementIds = new Set(
+    (existingAchievementsResult.data ?? []).map((a) => a.achievement_id)
   );
+  const existingSlugs = allAchievements
+    .filter((a) => existingAchievementIds.has(a.id))
+    .map((a) => a.slug);
 
-  // Get user's log count and distinct Bristol values
-  const { count: logCount } = await supabase
-    .from("logs")
-    .select("*", { count: "exact", head: true })
-    .eq("user_id", userId);
+  // Distinct Bristol types
+  const allBristolTypes = [
+    ...new Set((bristolValuesResult.data ?? []).map((l) => l.bristol_scale as number)),
+  ];
 
-  const { data: bristolValues } = await supabase
-    .from("logs")
-    .select("bristol_scale")
-    .eq("user_id", userId);
+  // Log times for creature_of_habit / perfect_week
+  const logTimes = (recentLogsResult.data ?? []).map((l) => l.logged_at);
 
-  const distinctBristol = new Set(
-    (bristolValues ?? []).map((l) => l.bristol_scale)
-  ).size;
+  // Count completed challenges (where progress >= target)
+  const completedChallenges = (completedChallengesResult.data ?? []).filter(
+    (cp) => {
+      const challenge = cp.challenges as unknown as { target: number } | null;
+      return challenge && cp.progress >= challenge.target;
+    }
+  ).length;
 
-  const hour = new Date().getHours();
+  // Unique locations (rounded to 1 decimal place)
+  const locationSet = new Set<string>();
+  for (const log of locationLogsResult.data ?? []) {
+    if (log.lat != null && log.lng != null) {
+      const key = `${Math.round(log.lat * 10) / 10},${Math.round(log.lng * 10) / 10}`;
+      locationSet.add(key);
+    }
+  }
 
+  // Build the context for the pure function
+  const ctx: AchievementContext = {
+    totalLogs: logCountResult.count ?? 0,
+    currentStreak,
+    latestLog: {
+      bristol_scale: data.bristol_scale,
+      duration_seconds: data.duration_seconds,
+      logged_at: loggedAt,
+      lat: data.lat,
+      lng: data.lng,
+    },
+    allBristolTypes,
+    friendCount: friendCountResult.count ?? 0,
+    completedChallenges,
+    logTimes,
+    uniqueLocations: locationSet.size,
+    existingAchievements: existingSlugs,
+  };
+
+  // Run the pure achievement checker
+  const newSlugs = checkAchievementsPure(ctx);
+
+  if (newSlugs.length === 0) return [];
+
+  // Map slugs back to achievement records and insert user_achievements
   const newlyUnlocked: { name: string; icon_emoji: string; description: string }[] = [];
 
-  for (const achievement of allAchievements) {
-    if (existingIds.has(achievement.id)) continue;
+  for (const slug of newSlugs) {
+    const achievement = allAchievements.find((a) => a.slug === slug);
+    if (!achievement) continue;
 
-    let unlocked = false;
+    // Insert user_achievement row
+    await supabase.from("user_achievements").insert({
+      user_id: userId,
+      achievement_id: achievement.id,
+    });
 
-    switch (achievement.slug) {
-      case "first_drop":
-        unlocked = (logCount ?? 0) === 1;
-        break;
-      case "speed_demon":
-        unlocked = data.duration_seconds < 60;
-        break;
-      case "marathon_sitter":
-        unlocked = data.duration_seconds > 1200;
-        break;
-      case "night_owl":
-        unlocked = hour >= 0 && hour < 5;
-        break;
-      case "variety_pack":
-        unlocked = distinctBristol >= 5;
-        break;
-    }
-
-    if (unlocked) {
-      // Insert user_achievement
-      await supabase.from("user_achievements").insert({
-        user_id: userId,
-        achievement_id: achievement.id,
-      });
-
-      newlyUnlocked.push({
-        name: achievement.name,
-        icon_emoji: achievement.icon_emoji,
-        description: achievement.description,
-      });
-    }
+    newlyUnlocked.push({
+      name: achievement.name,
+      icon_emoji: achievement.icon_emoji,
+      description: achievement.description,
+    });
   }
 
   return newlyUnlocked;
