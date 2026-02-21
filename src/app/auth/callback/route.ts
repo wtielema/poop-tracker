@@ -1,27 +1,44 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import type { EmailOtpType } from "@supabase/supabase-js";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-
-  if (!code) {
-    return NextResponse.redirect(`${origin}/login`);
-  }
+  const token_hash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
 
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
-  if (error || !data.session) {
+  // Handle PKCE flow (code exchange)
+  if (code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      return NextResponse.redirect(`${origin}/login`);
+    }
+  }
+  // Handle email link flow (token_hash + type)
+  else if (token_hash && type) {
+    const { error } = await supabase.auth.verifyOtp({ token_hash, type });
+    if (error) {
+      return NextResponse.redirect(`${origin}/login`);
+    }
+  }
+  // No auth params at all
+  else {
     return NextResponse.redirect(`${origin}/login`);
   }
 
-  // Check if user already has a profile with a username
-  const userId = data.session.user.id;
+  // Auth succeeded — check if user has a profile with username
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.redirect(`${origin}/login`);
+  }
+
   const { data: profile } = await supabase
     .from("profiles")
     .select("username")
-    .eq("id", userId)
+    .eq("id", user.id)
     .single();
 
   if (!profile || !profile.username) {
