@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { BRISTOL_SCALE, MOODS } from "@/lib/constants";
+import { haversineDistance } from "@/lib/geo";
 import type { BristolScale, Mood } from "@/lib/types";
 
 export interface Pin {
@@ -27,30 +28,6 @@ interface PoopMapProps {
   pins: Pin[];
   friendPins: FriendPin[];
   showFriends: boolean;
-}
-
-// Haversine formula to calculate distance in meters between two coordinates
-function haversineDistance(
-  lat1: number,
-  lng1: number,
-  lat2: number,
-  lng2: number
-): number {
-  const R = 6371000; // Earth radius in meters
-  const toRad = (deg: number) => (deg * Math.PI) / 180;
-
-  const dLat = toRad(lat2 - lat1);
-  const dLng = toRad(lng2 - lng1);
-
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLng / 2) *
-      Math.sin(dLng / 2);
-
-  const c = 2 * Math.asin(Math.sqrt(a));
-  return R * c;
 }
 
 function createPoopIcon(hasBuddy: boolean) {

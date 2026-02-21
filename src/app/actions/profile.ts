@@ -1,6 +1,10 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import {
+  calculateStreak as calcStreak,
+  calculateLongestStreak as calcLongestStreak,
+} from "@/lib/streaks";
 import type { BristolScale, MapVisibility, Mood } from "@/lib/types";
 
 interface ProfileStats {
@@ -296,76 +300,12 @@ export async function declineFriendRequest(
 
 // Helper functions
 
-function calculateCurrentStreak(
-  logs: { logged_at: string }[]
-): number {
-  if (logs.length === 0) return 0;
-
-  const dates = [
-    ...new Set(logs.map((l) => l.logged_at.substring(0, 10))),
-  ].sort((a, b) => (a > b ? -1 : 1));
-
-  const today = new Date();
-  const todayStr = today.toISOString().substring(0, 10);
-
-  let streak = 0;
-
-  if (dates[0] === todayStr) {
-    streak = 1;
-  } else {
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().substring(0, 10);
-    if (dates[0] === yesterdayStr) {
-      streak = 1;
-    } else {
-      return 0;
-    }
-  }
-
-  for (let i = 0; i < dates.length - 1; i++) {
-    const current = new Date(dates[i]);
-    const next = new Date(dates[i + 1]);
-    const diffMs = current.getTime() - next.getTime();
-    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 1) {
-      streak++;
-    } else {
-      break;
-    }
-  }
-
-  return streak;
+function calculateCurrentStreak(logs: { logged_at: string }[]): number {
+  return calcStreak(logs.map((l) => l.logged_at));
 }
 
-function calculateLongestStreak(
-  logs: { logged_at: string }[]
-): number {
-  if (logs.length === 0) return 0;
-
-  const dates = [
-    ...new Set(logs.map((l) => l.logged_at.substring(0, 10))),
-  ].sort((a, b) => (a > b ? -1 : 1));
-
-  let longest = 1;
-  let current = 1;
-
-  for (let i = 0; i < dates.length - 1; i++) {
-    const d1 = new Date(dates[i]);
-    const d2 = new Date(dates[i + 1]);
-    const diffMs = d1.getTime() - d2.getTime();
-    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 1) {
-      current++;
-      longest = Math.max(longest, current);
-    } else {
-      current = 1;
-    }
-  }
-
-  return longest;
+function calculateLongestStreak(logs: { logged_at: string }[]): number {
+  return calcLongestStreak(logs.map((l) => l.logged_at));
 }
 
 function calculateTopBristol(

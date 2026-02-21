@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { checkAchievements as checkAchievementsPure } from "@/lib/achievements";
+import { calculateStreak as calcStreak } from "@/lib/streaks";
 import type { AchievementContext } from "@/lib/achievements";
 import type { BristolScale, Mood } from "@/lib/types";
 
@@ -53,7 +54,7 @@ export async function createLog(data: CreateLogInput): Promise<CreateLogResult> 
   }
 
   // Calculate streak
-  const streak = await calculateStreak(supabase, user.id);
+  const streak = await calculateStreakFromDb(supabase, user.id);
 
   // Check achievements using the pure function
   const newAchievements = await checkAchievements(
@@ -70,11 +71,10 @@ export async function createLog(data: CreateLogInput): Promise<CreateLogResult> 
   return { streak, newAchievements, funFact };
 }
 
-async function calculateStreak(
+async function calculateStreakFromDb(
   supabase: Awaited<ReturnType<typeof createClient>>,
   userId: string
 ): Promise<number> {
-  // Get logs grouped by date, ordered descending
   const { data: logs } = await supabase
     .from("logs")
     .select("logged_at")
@@ -83,41 +83,9 @@ async function calculateStreak(
 
   if (!logs || logs.length === 0) return 1;
 
-  // Extract unique dates (in user's local context, but we use UTC date part)
-  const dates = [
-    ...new Set(logs.map((l) => l.logged_at.substring(0, 10))),
-  ].sort((a, b) => (a > b ? -1 : 1));
-
-  let streak = 1;
-  const today = new Date();
-  const todayStr = today.toISOString().substring(0, 10);
-
-  // Start from the most recent date
-  if (dates[0] !== todayStr) {
-    // Check if the most recent log was yesterday
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().substring(0, 10);
-    if (dates[0] !== yesterdayStr) {
-      return 1; // Streak broken
-    }
-  }
-
-  // Count consecutive days
-  for (let i = 0; i < dates.length - 1; i++) {
-    const current = new Date(dates[i]);
-    const next = new Date(dates[i + 1]);
-    const diffMs = current.getTime() - next.getTime();
-    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 1) {
-      streak++;
-    } else {
-      break;
-    }
-  }
-
-  return streak;
+  const streak = calcStreak(logs.map((l) => l.logged_at));
+  // Original behavior: minimum streak of 1 after logging (since we just inserted)
+  return Math.max(streak, 1);
 }
 
 async function checkAchievements(

@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { calculateStreak } from "@/lib/streaks";
 import { getDailyFact } from "@/lib/fun-facts";
 
 interface FeedEvent {
@@ -59,45 +60,10 @@ async function calculateStreakAndToday(
     return { streak: 0, loggedToday: false };
   }
 
-  // Extract unique dates
-  const dates = [
-    ...new Set(logs.map((l) => l.logged_at.substring(0, 10))),
-  ].sort((a, b) => (a > b ? -1 : 1));
-
-  const today = new Date();
-  const todayStr = today.toISOString().substring(0, 10);
-  const loggedToday = dates[0] === todayStr;
-
-  // Calculate streak
-  let streak = 0;
-
-  // Check if most recent log is today or yesterday
-  if (dates[0] === todayStr) {
-    streak = 1;
-  } else {
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().substring(0, 10);
-    if (dates[0] === yesterdayStr) {
-      streak = 1;
-    } else {
-      return { streak: 0, loggedToday: false };
-    }
-  }
-
-  // Count consecutive days from the most recent date
-  for (let i = 0; i < dates.length - 1; i++) {
-    const current = new Date(dates[i]);
-    const next = new Date(dates[i + 1]);
-    const diffMs = current.getTime() - next.getTime();
-    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 1) {
-      streak++;
-    } else {
-      break;
-    }
-  }
+  const logDates = logs.map((l) => l.logged_at);
+  const todayStr = new Date().toISOString().substring(0, 10);
+  const loggedToday = logDates[0].substring(0, 10) === todayStr;
+  const streak = calculateStreak(logDates);
 
   return { streak, loggedToday };
 }
