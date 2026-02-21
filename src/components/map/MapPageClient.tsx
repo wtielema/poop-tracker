@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import type { MapPin, FriendPin } from "@/app/actions/map";
+import { getRandomFact } from "@/lib/fun-facts";
 
 const PoopMap = dynamic(() => import("@/components/map/PoopMap"), {
   ssr: false,
@@ -57,6 +58,24 @@ export default function MapPageClient({
         >
           Enable {"\u{1F4CD}"} when logging to see your poop map {"\u{1F5FA}\uFE0F"}
         </p>
+        <div
+          className="mt-6 rounded-xl px-4 py-3 text-left"
+          style={{
+            maxWidth: 320,
+            background: "rgba(245, 197, 66, 0.1)",
+            border: "1px solid rgba(245, 197, 66, 0.25)",
+          }}
+        >
+          <div
+            className="mb-1 font-bold"
+            style={{ fontSize: 13, color: "var(--accent-dim)" }}
+          >
+            {"\uD83D\uDCA1"} Did you know?
+          </div>
+          <div style={{ fontSize: 14, color: "var(--foreground)", lineHeight: 1.5 }}>
+            {getRandomFact()}
+          </div>
+        </div>
       </div>
     );
   }

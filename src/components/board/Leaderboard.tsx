@@ -5,6 +5,7 @@ import {
   getLeaderboard,
   type LeaderboardEntry,
 } from "@/app/actions/challenges";
+import { getRandomFact } from "@/lib/fun-facts";
 
 type SortBy = "streak" | "weekly" | "monthly";
 
@@ -136,13 +137,24 @@ export default function Leaderboard({
         ))}
       </div>
 
-      {/* Loading indicator */}
+      {/* Loading indicator with fun fact */}
       {isPending && (
         <div
-          className="text-center py-2 font-medium"
-          style={{ fontSize: 13, color: "var(--muted)" }}
+          className="rounded-xl px-4 py-3 text-center"
+          style={{
+            background: "rgba(245, 197, 66, 0.1)",
+            border: "1px solid rgba(245, 197, 66, 0.25)",
+          }}
         >
-          Loading...
+          <div
+            className="mb-1 font-bold"
+            style={{ fontSize: 13, color: "var(--accent-dim)" }}
+          >
+            {"\uD83D\uDCA1"} Did you know?
+          </div>
+          <div style={{ fontSize: 13, color: "var(--foreground)", lineHeight: 1.5 }}>
+            {getRandomFact()}
+          </div>
         </div>
       )}
 

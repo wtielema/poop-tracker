@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { getDailyFact } from "@/lib/fun-facts";
 
 interface FeedEvent {
   id: string;
@@ -104,8 +105,8 @@ async function calculateStreakAndToday(
 async function getDailyFunFact(
   supabase: Awaited<ReturnType<typeof createClient>>
 ): Promise<string> {
-  const fallback =
-    "The average person spends about 3 months of their lifetime on the toilet!";
+  // Use the client-side fun-facts data as fallback
+  const fallback = getDailyFact();
 
   // Get count of fun facts
   const { count } = await supabase

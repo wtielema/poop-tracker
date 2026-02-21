@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { getRandomFact } from "@/lib/fun-facts";
 
 interface FeedEvent {
   id: string;
@@ -39,22 +40,41 @@ export default function FriendFeed({ events }: FriendFeedProps) {
       </h2>
 
       {events.length === 0 ? (
-        <Link
-          href="/profile"
-          style={{ textDecoration: "none" }}
-        >
+        <div className="space-y-3">
+          <Link
+            href="/profile"
+            style={{ textDecoration: "none" }}
+          >
+            <div
+              className="rounded-xl px-4 py-4 text-center"
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              <div style={{ fontSize: 14, color: "var(--muted)", lineHeight: 1.6 }}>
+                No friends yet! Add some to see what they&apos;re up to {"\uD83E\uDD8B"}
+              </div>
+            </div>
+          </Link>
           <div
-            className="rounded-xl px-4 py-4 text-center"
+            className="rounded-xl px-4 py-3"
             style={{
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
+              background: "rgba(245, 197, 66, 0.1)",
+              border: "1px solid rgba(245, 197, 66, 0.25)",
             }}
           >
-            <div style={{ fontSize: 14, color: "var(--muted)", lineHeight: 1.6 }}>
-              No friends yet! Add some to see what they&apos;re up to {"\uD83E\uDD8B"}
+            <div
+              className="mb-1 font-bold"
+              style={{ fontSize: 13, color: "var(--accent-dim)" }}
+            >
+              {"\uD83D\uDCA1"} Did you know?
+            </div>
+            <div style={{ fontSize: 14, color: "var(--foreground)", lineHeight: 1.5 }}>
+              {getRandomFact()}
             </div>
           </div>
-        </Link>
+        </div>
       ) : (
         <div className="space-y-2">
           {events.map((event) => (
