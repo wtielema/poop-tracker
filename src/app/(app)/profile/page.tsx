@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { getProfileData } from "@/app/actions/profile";
+import { createClient } from "@/lib/supabase/server";
 import StatsGrid from "@/components/profile/StatsGrid";
 import AchievementGrid from "@/components/profile/AchievementGrid";
 import FriendsList from "@/components/profile/FriendsList";
+import ShareButton from "@/components/ShareButton";
 
 export default async function Profile() {
   const data = await getProfileData();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const userId = user?.id ?? "";
 
   return (
     <div className="max-w-md mx-auto px-6 py-4 space-y-6">
@@ -51,6 +58,13 @@ export default async function Profile() {
           Edit
         </Link>
       </div>
+
+      {/* Share Stats */}
+      {userId && (
+        <div className="flex justify-center">
+          <ShareButton userId={userId} label="Share Stats" />
+        </div>
+      )}
 
       {/* Stats */}
       <StatsGrid stats={data.stats} />

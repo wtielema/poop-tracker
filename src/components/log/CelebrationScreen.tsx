@@ -2,12 +2,14 @@
 
 import { useEffect } from "react";
 import { STREAK_THRESHOLDS } from "@/lib/constants";
+import ShareButton from "@/components/ShareButton";
 
 interface CelebrationScreenProps {
   streak: number;
   newAchievements: { name: string; icon_emoji: string; description: string }[];
   funFact: string;
   onDone: () => void;
+  userId?: string;
 }
 
 function getStreakInfo(streak: number) {
@@ -22,6 +24,7 @@ export default function CelebrationScreen({
   newAchievements,
   funFact,
   onDone,
+  userId,
 }: CelebrationScreenProps) {
   // Auto-dismiss after 10 seconds
   useEffect(() => {
@@ -134,6 +137,13 @@ export default function CelebrationScreen({
       >
         Nice! \uD83D\uDCAA
       </button>
+
+      {/* Share button */}
+      {userId && (
+        <div className="mt-4" onClick={(e) => e.stopPropagation()}>
+          <ShareButton userId={userId} label="Share Stats" />
+        </div>
+      )}
     </div>
   );
 }

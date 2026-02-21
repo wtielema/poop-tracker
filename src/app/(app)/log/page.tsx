@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { NOTE_PLACEHOLDERS } from "@/lib/constants";
 import type { BristolScale, Mood } from "@/lib/types";
 import BristolPicker from "@/components/log/BristolPicker";
@@ -9,6 +9,7 @@ import MoodPicker from "@/components/log/MoodPicker";
 import GeotagToggle from "@/components/log/GeotagToggle";
 import CelebrationScreen from "@/components/log/CelebrationScreen";
 import { createLog } from "@/app/actions/logs";
+import { createClient } from "@/lib/supabase/client";
 
 interface CelebrationData {
   streak: number;
@@ -26,8 +27,16 @@ export default function LogPage() {
   const [submitting, setSubmitting] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [celebrationData, setCelebrationData] = useState<CelebrationData | null>(null);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const durationRef = useRef(0);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) setUserId(user.id);
+    });
+  }, []);
 
   const placeholder = useMemo(
     () => NOTE_PLACEHOLDERS[Math.floor(Math.random() * NOTE_PLACEHOLDERS.length)],
@@ -200,6 +209,7 @@ export default function LogPage() {
           newAchievements={celebrationData.newAchievements}
           funFact={celebrationData.funFact}
           onDone={handleCelebrationDone}
+          userId={userId}
         />
       )}
 
