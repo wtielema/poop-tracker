@@ -7,7 +7,13 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
+  const errorParam = searchParams.get("error_description") || searchParams.get("error");
   const next = searchParams.get("next") ?? "/";
+
+  // Handle errors from Supabase (expired/used tokens)
+  if (errorParam) {
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(errorParam)}`);
+  }
 
   const supabase = await createClient();
 
