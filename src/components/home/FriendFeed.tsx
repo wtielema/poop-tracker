@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { getRandomFact } from "@/lib/fun-facts";
 
 interface FeedEvent {
@@ -30,14 +32,45 @@ function formatRelativeTime(isoTime: string): string {
 }
 
 export default function FriendFeed({ events }: FriendFeedProps) {
+  const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
+
+  function handleRefresh() {
+    setRefreshing(true);
+    router.refresh();
+    // Show spinner briefly even if refresh is instant
+    setTimeout(() => setRefreshing(false), 1000);
+  }
+
   return (
     <div>
-      <h2
-        className="mb-3 font-bold"
-        style={{ fontSize: 16, color: "var(--foreground)" }}
-      >
-        Recent Activity
-      </h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2
+          className="font-bold"
+          style={{ fontSize: 16, color: "var(--foreground)" }}
+        >
+          Recent Activity
+        </h2>
+        <button
+          type="button"
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="tap-bounce flex items-center justify-center rounded-full"
+          style={{
+            width: 32,
+            height: 32,
+            fontSize: 16,
+            background: "var(--background)",
+            border: "1px solid var(--border)",
+            cursor: "pointer",
+            transition: "transform 0.3s ease",
+            transform: refreshing ? "rotate(360deg)" : "rotate(0deg)",
+          }}
+          aria-label="Refresh feed"
+        >
+          {"\uD83D\uDD04"}
+        </button>
+      </div>
 
       {events.length === 0 ? (
         <div className="space-y-3">

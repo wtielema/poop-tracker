@@ -92,7 +92,7 @@ export default function AddFriendPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto px-6 py-4 space-y-6">
+    <div className="max-w-md mx-auto px-6 py-4 space-y-6 animate-page-enter">
       {/* Header */}
       <div className="flex items-center gap-3">
         <button
@@ -212,7 +212,7 @@ export default function AddFriendPage() {
                   type="button"
                   onClick={() => handleSend(user.id)}
                   disabled={isSent || isSending}
-                  className="rounded-xl px-4 py-2 text-sm font-bold transition-all hover:opacity-90 disabled:opacity-70"
+                  className="rounded-xl px-4 py-2 text-sm font-bold transition-all hover:opacity-90 disabled:opacity-70 tap-bounce"
                   style={{
                     background: isSent ? "var(--success)" : "var(--primary)",
                     color: "#FFFFFF",
@@ -259,7 +259,7 @@ export default function AddFriendPage() {
               <button
                 type="button"
                 onClick={handleCopy}
-                className="w-full rounded-xl py-3 text-center font-bold transition-all hover:opacity-90 active:scale-[0.98]"
+                className="w-full rounded-xl py-3 text-center font-bold transition-all hover:opacity-90 tap-bounce"
                 style={{
                   background: copied ? "var(--success)" : "var(--accent)",
                   color: copied ? "#FFFFFF" : "var(--foreground)",

@@ -75,7 +75,7 @@ export default function FriendProfileClient({
   }
 
   return (
-    <div className="max-w-md mx-auto px-6 py-4 space-y-6">
+    <div className="max-w-md mx-auto px-6 py-4 space-y-6 animate-page-enter">
       {/* Header */}
       <div className="flex items-center gap-3">
         <button

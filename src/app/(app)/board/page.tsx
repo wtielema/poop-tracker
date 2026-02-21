@@ -16,7 +16,7 @@ export default async function Board() {
   ]);
 
   return (
-    <div className="max-w-md mx-auto px-6 py-4 space-y-4">
+    <div className="max-w-md mx-auto px-6 py-4 space-y-4 animate-page-enter">
       <h1
         className="font-bold"
         style={{ fontSize: 24, color: "var(--foreground)" }}

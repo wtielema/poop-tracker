@@ -42,7 +42,7 @@ export default async function ChallengeDetailPage({
   }
 
   return (
-    <div className="max-w-md mx-auto px-6 py-4 space-y-4">
+    <div className="max-w-md mx-auto px-6 py-4 space-y-4 animate-page-enter">
       <Link
         href="/board"
         className="inline-flex items-center gap-1 font-semibold transition-opacity hover:opacity-80"

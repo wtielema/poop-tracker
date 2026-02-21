@@ -15,7 +15,7 @@ export default async function Profile() {
   const userId = user?.id ?? "";
 
   return (
-    <div className="max-w-md mx-auto px-6 py-4 space-y-6">
+    <div className="max-w-md mx-auto px-6 py-4 space-y-6 animate-page-enter">
       {/* User Header */}
       <div className="flex items-center gap-4">
         <div

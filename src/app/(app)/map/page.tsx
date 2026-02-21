@@ -5,7 +5,7 @@ export default async function MapPage() {
   const data = await getMapData();
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-4">
+    <div className="max-w-lg mx-auto px-4 py-4 animate-page-enter">
       {/* Header */}
       <h1
         className="font-bold mb-4"

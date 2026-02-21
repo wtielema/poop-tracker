@@ -39,7 +39,7 @@ export default function BottomNav() {
             <Link
               key={tab.route}
               href={tab.route}
-              className="flex flex-col items-center justify-center -mt-4"
+              className="flex flex-col items-center justify-center -mt-4 tap-bounce"
               style={{ textDecoration: "none" }}
             >
               <div
@@ -75,7 +75,7 @@ export default function BottomNav() {
           <Link
             key={tab.route}
             href={tab.route}
-            className="flex flex-col items-center justify-center py-2"
+            className="flex flex-col items-center justify-center py-2 tap-bounce"
             style={{
               textDecoration: "none",
               minWidth: 56,

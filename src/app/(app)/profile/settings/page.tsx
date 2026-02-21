@@ -128,7 +128,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto px-6 py-4 space-y-6">
+    <div className="max-w-md mx-auto px-6 py-4 space-y-6 animate-page-enter">
       {/* Header */}
       <div className="flex items-center gap-3">
         <button
@@ -274,7 +274,7 @@ export default function SettingsPage() {
         type="button"
         onClick={handleSave}
         disabled={saving}
-        className="w-full rounded-xl text-base font-bold transition-all hover:opacity-90 disabled:opacity-60"
+        className="w-full rounded-xl text-base font-bold transition-all hover:opacity-90 disabled:opacity-60 tap-bounce"
         style={{
           height: "48px",
           background: "var(--accent)",

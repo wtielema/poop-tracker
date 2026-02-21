@@ -14,8 +14,16 @@ function getStreakInfo(streak: number) {
   );
 }
 
+function getFireAnimationClass(streak: number): string {
+  if (streak >= 100) return "animate-fire-rapid animate-fire-glow";
+  if (streak >= 30) return "animate-fire-fast";
+  if (streak >= 7) return "animate-fire-medium";
+  return "animate-fire-slow";
+}
+
 export default function StreakCard({ streak, loggedToday }: StreakCardProps) {
   const streakInfo = getStreakInfo(streak);
+  const fireClass = getFireAnimationClass(streak);
 
   return (
     <div
@@ -26,7 +34,7 @@ export default function StreakCard({ streak, loggedToday }: StreakCardProps) {
       }}
     >
       {streak > 0 && (
-        <div className="animate-fire" style={{ fontSize: 36 }}>
+        <div className={fireClass} style={{ fontSize: 36 }}>
           {streakInfo.fires}
         </div>
       )}

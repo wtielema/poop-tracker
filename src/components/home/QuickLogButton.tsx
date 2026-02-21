@@ -7,7 +7,7 @@ export default function QuickLogButton() {
     <div className="flex flex-col items-center">
       <Link
         href="/log"
-        className="flex items-center justify-center rounded-full transition-transform active:scale-95 hover:scale-105"
+        className="flex items-center justify-center rounded-full transition-transform active:scale-95 hover:scale-105 tap-bounce"
         style={{
           width: 80,
           height: 80,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { STREAK_THRESHOLDS } from "@/lib/constants";
 import ShareButton from "@/components/ShareButton";
 
@@ -16,6 +16,45 @@ function getStreakInfo(streak: number) {
   return (
     STREAK_THRESHOLDS.find((t) => streak >= t.min && streak <= t.max) ??
     STREAK_THRESHOLDS[0]
+  );
+}
+
+const CONFETTI_COLORS = ["#E53935", "#F5C542", "#4CAF50", "#2196F3", "#9C27B0"];
+const CONFETTI_ANIMATIONS = ["confetti-1", "confetti-2", "confetti-3", "confetti-4"];
+
+function ConfettiParticles() {
+  const particles = useMemo(() => {
+    return Array.from({ length: 16 }, (_, i) => ({
+      id: i,
+      color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+      animation: CONFETTI_ANIMATIONS[i % CONFETTI_ANIMATIONS.length],
+      left: `${10 + (i * 5.5) % 80}%`,
+      delay: `${(i * 0.12).toFixed(2)}s`,
+      size: 6 + (i % 3) * 2,
+    }));
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          style={{
+            position: "absolute",
+            left: p.left,
+            top: "50%",
+            width: p.size,
+            height: p.size,
+            background: p.color,
+            borderRadius: p.id % 3 === 0 ? "50%" : "1px",
+            animation: `${p.animation} 1.2s ease-out forwards`,
+            animationDelay: p.delay,
+            opacity: 0,
+            animationFillMode: "forwards",
+          }}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -42,6 +81,9 @@ export default function CelebrationScreen({
       }}
       onClick={onDone}
     >
+      {/* Confetti particles */}
+      <ConfettiParticles />
+
       {/* Streak section */}
       <div className="mb-6 text-center">
         <div className="animate-fire" style={{ fontSize: 48 }}>
@@ -125,7 +167,7 @@ export default function CelebrationScreen({
       <button
         type="button"
         onClick={onDone}
-        className="rounded-xl px-8 py-3 font-bold transition-all active:scale-95"
+        className="rounded-xl px-8 py-3 font-bold transition-all active:scale-95 tap-bounce"
         style={{
           fontSize: 18,
           background: "var(--accent)",

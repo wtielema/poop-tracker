@@ -28,6 +28,7 @@ export default function LogPage() {
   const [showCelebration, setShowCelebration] = useState(false);
   const [celebrationData, setCelebrationData] = useState<CelebrationData | null>(null);
   const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [showSplash, setShowSplash] = useState(false);
 
   const durationRef = useRef(0);
 
@@ -63,25 +64,32 @@ export default function LogPage() {
   const handleSubmit = async () => {
     if (!canSubmit || !bristolScale || !mood) return;
 
-    setSubmitting(true);
-    try {
-      const result = await createLog({
-        bristol_scale: bristolScale,
-        duration_seconds: durationSeconds,
-        mood,
-        note: note.trim() || null,
-        lat,
-        lng,
-      });
+    // Play splash animation first
+    setShowSplash(true);
 
-      setCelebrationData(result);
-      setShowCelebration(true);
-    } catch (error) {
-      console.error("Failed to log:", error);
-      // Could show a toast here
-    } finally {
-      setSubmitting(false);
-    }
+    // Wait for animation to play, then submit
+    setTimeout(async () => {
+      setSubmitting(true);
+      setShowSplash(false);
+      try {
+        const result = await createLog({
+          bristol_scale: bristolScale,
+          duration_seconds: durationSeconds,
+          mood,
+          note: note.trim() || null,
+          lat,
+          lng,
+        });
+
+        setCelebrationData(result);
+        setShowCelebration(true);
+      } catch (error) {
+        console.error("Failed to log:", error);
+        // Could show a toast here
+      } finally {
+        setSubmitting(false);
+      }
+    }, 600);
   };
 
   const handleCelebrationDone = useCallback(() => {
@@ -99,7 +107,7 @@ export default function LogPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-md px-6 py-4 space-y-6">
+      <div className="mx-auto max-w-md px-6 py-4 space-y-6 animate-page-enter">
         {/* Header */}
         <div className="text-center">
           <h1 className="text-2xl font-bold" style={{ color: "var(--foreground)" }}>
@@ -169,12 +177,12 @@ export default function LogPage() {
         </section>
 
         {/* Submit button */}
-        <section className="pb-4">
+        <section className="pb-4 relative">
           <button
             type="button"
             onClick={handleSubmit}
             disabled={!canSubmit}
-            className="w-full rounded-xl font-bold transition-all active:scale-[0.97]"
+            className="w-full rounded-xl font-bold transition-all tap-bounce"
             style={{
               height: 56,
               fontSize: 18,
@@ -199,6 +207,37 @@ export default function LogPage() {
               "Log It \uD83D\uDCA9"
             )}
           </button>
+
+          {/* Splash animation overlay */}
+          {showSplash && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-visible">
+              {/* Dropping poop emoji */}
+              <span className="animate-poop-drop absolute" style={{ fontSize: 40, zIndex: 10 }}>
+                {"\uD83D\uDCA9"}
+              </span>
+              {/* Water ripple circles */}
+              <div
+                className="animate-ripple absolute rounded-full"
+                style={{
+                  width: 40,
+                  height: 40,
+                  top: "80%",
+                  background: "radial-gradient(circle, rgba(139, 94, 60, 0.3) 0%, transparent 70%)",
+                  animationDelay: "0.4s",
+                }}
+              />
+              <div
+                className="animate-ripple absolute rounded-full"
+                style={{
+                  width: 30,
+                  height: 30,
+                  top: "80%",
+                  background: "radial-gradient(circle, rgba(139, 94, 60, 0.2) 0%, transparent 70%)",
+                  animationDelay: "0.5s",
+                }}
+              />
+            </div>
+          )}
         </section>
       </div>
 
