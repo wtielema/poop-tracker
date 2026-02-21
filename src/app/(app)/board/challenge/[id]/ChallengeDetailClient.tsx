@@ -115,7 +115,7 @@ export default function ChallengeDetailClient({
               color: "var(--foreground)",
             }}
           >
-            {challenge.type === "streak" ? "Streak \uD83D\uDD25" : "Log Count \uD83D\uDCCA"}{" "}
+            {challenge.type === "streak" ? "Streak 🔥" : "Log Count 📊"}{" "}
             · Target: {challenge.target}
           </span>
           <span
@@ -184,11 +184,11 @@ export default function ChallengeDetailClient({
 
             let rankIcon: string;
             if (rank === 1) {
-              rankIcon = "\uD83D\uDC51";
+              rankIcon = "👑";
             } else if (rank === 2) {
-              rankIcon = "\uD83E\uDD48";
+              rankIcon = "🥈";
             } else if (rank === 3) {
-              rankIcon = "\uD83E\uDD49";
+              rankIcon = "🥉";
             } else {
               rankIcon = `${rank}`;
             }
@@ -295,7 +295,7 @@ export default function ChallengeDetailClient({
             fontSize: 14,
           }}
         >
-          {copied ? "Copied! \u2705" : "Share Challenge \uD83D\uDCCB"}
+          {copied ? "Copied! ✅" : "Share Challenge 📋"}
         </button>
       </div>
 

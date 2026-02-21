@@ -151,7 +151,7 @@ async function getFriendFeed(
       events.push({
         id: `log-${recentLog[0].id}`,
         text: `${name} logged today`,
-        emoji: "\uD83D\uDCA9",
+        emoji: "💩",
         time: recentLog[0].logged_at,
       });
     }
@@ -181,7 +181,7 @@ async function getFriendFeed(
           events.push({
             id: `ach-${ua.achievement_id}-${friendId}`,
             text: `${name} unlocked ${achievement.name}`,
-            emoji: achievement.icon_emoji ?? "\uD83C\uDFC6",
+            emoji: achievement.icon_emoji ?? "🏆",
             time: ua.unlocked_at,
           });
         }

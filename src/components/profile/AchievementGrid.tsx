@@ -81,7 +81,7 @@ export default function AchievementGrid({
                   filter: unlocked ? "none" : "grayscale(100%)",
                 }}
               >
-                {unlocked ? achievement.icon_emoji : "\uD83D\uDD12"}
+                {unlocked ? achievement.icon_emoji : "🔒"}
               </span>
               <span
                 className="mt-1 text-center font-medium leading-tight"

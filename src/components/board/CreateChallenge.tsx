@@ -84,7 +84,7 @@ export default function CreateChallenge({ onClose }: CreateChallengeProps) {
         }}
       >
         <div className="text-center">
-          <div style={{ fontSize: 48 }}>{"\uD83C\uDF89"}</div>
+          <div style={{ fontSize: 48 }}>{"🎉"}</div>
           <h3
             className="mt-2 font-bold"
             style={{ fontSize: 18, color: "var(--foreground)" }}
@@ -122,7 +122,7 @@ export default function CreateChallenge({ onClose }: CreateChallengeProps) {
               fontSize: 14,
             }}
           >
-            Copy Link {"\uD83D\uDCCB"}
+            Copy Link {"📋"}
           </button>
           <button
             type="button"
@@ -164,7 +164,7 @@ export default function CreateChallenge({ onClose }: CreateChallengeProps) {
           className="font-bold transition-opacity hover:opacity-70"
           style={{ fontSize: 20, color: "var(--muted)" }}
         >
-          {"\u00D7"}
+          {"×"}
         </button>
       </div>
 
@@ -246,7 +246,7 @@ export default function CreateChallenge({ onClose }: CreateChallengeProps) {
                 type === "streak" ? "var(--foreground)" : "var(--muted)",
             }}
           >
-            Streak {"\uD83D\uDD25"}
+            Streak {"🔥"}
           </button>
           <button
             type="button"
@@ -260,7 +260,7 @@ export default function CreateChallenge({ onClose }: CreateChallengeProps) {
                 type === "count" ? "var(--foreground)" : "var(--muted)",
             }}
           >
-            Log Count {"\uD83D\uDCCA"}
+            Log Count {"📊"}
           </button>
         </div>
       </div>
@@ -355,7 +355,7 @@ export default function CreateChallenge({ onClose }: CreateChallengeProps) {
           fontSize: 14,
         }}
       >
-        {isPending ? "Creating..." : "Create Challenge \uD83C\uDFAF"}
+        {isPending ? "Creating..." : "Create Challenge 🎯"}
       </button>
     </div>
   );

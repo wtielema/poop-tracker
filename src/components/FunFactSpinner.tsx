@@ -24,13 +24,13 @@ export default function FunFactSpinner() {
           className="mb-4 text-5xl"
           style={{ animation: "poop-wobble 1.2s ease-in-out infinite" }}
         >
-          {"\uD83D\uDCA9"}
+          {"💩"}
         </div>
         <p
           className="mb-2 font-bold"
           style={{ fontSize: 13, color: "var(--accent-dim)" }}
         >
-          {"\uD83D\uDCA1"} Did you know?
+          {"💡"} Did you know?
         </p>
         <p
           className="leading-relaxed"

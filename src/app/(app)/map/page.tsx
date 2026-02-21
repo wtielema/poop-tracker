@@ -11,7 +11,7 @@ export default async function MapPage() {
         className="font-bold mb-4"
         style={{ fontSize: 22, color: "var(--foreground)" }}
       >
-        {"\u{1F5FA}\uFE0F"} Poop Map
+        {"🗺️"} Poop Map
       </h1>
 
       <MapPageClient pins={data.pins} friendPins={data.friendPins} />

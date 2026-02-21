@@ -15,15 +15,15 @@ interface LeaderboardProps {
 }
 
 const TABS: { key: SortBy; label: string }[] = [
-  { key: "streak", label: "Streak \uD83D\uDD25" },
+  { key: "streak", label: "Streak 🔥" },
   { key: "weekly", label: "This Week" },
   { key: "monthly", label: "This Month" },
 ];
 
 function getRankDisplay(rank: number): string {
-  if (rank === 1) return "\uD83D\uDC51";
-  if (rank === 2) return "\uD83E\uDD48";
-  if (rank === 3) return "\uD83E\uDD49";
+  if (rank === 1) return "👑";
+  if (rank === 2) return "🥈";
+  if (rank === 3) return "🥉";
   return `${rank}`;
 }
 
@@ -42,8 +42,8 @@ function getRankChangeArrow(
     const prevRank = prevRanks[userId];
     if (prevRank === undefined) return "";
 
-    if (currentRank < prevRank) return " \u2191";
-    if (currentRank > prevRank) return " \u2193";
+    if (currentRank < prevRank) return " ↑";
+    if (currentRank > prevRank) return " ↓";
   } catch {
     // Ignore parse errors
   }
@@ -100,12 +100,12 @@ export default function Leaderboard({
           boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
         }}
       >
-        <div style={{ fontSize: 48 }}>{"\uD83C\uDFC6"}</div>
+        <div style={{ fontSize: 48 }}>{"🏆"}</div>
         <p
           className="mt-3 font-medium"
           style={{ fontSize: 15, color: "var(--muted)" }}
         >
-          Add friends to see the leaderboard! {"\uD83C\uDFC6"}
+          Add friends to see the leaderboard! {"🏆"}
         </p>
       </div>
     );
@@ -150,7 +150,7 @@ export default function Leaderboard({
             className="mb-1 font-bold"
             style={{ fontSize: 13, color: "var(--accent-dim)" }}
           >
-            {"\uD83D\uDCA1"} Did you know?
+            {"💡"} Did you know?
           </div>
           <div style={{ fontSize: 13, color: "var(--foreground)", lineHeight: 1.5 }}>
             {getRandomFact()}
@@ -224,13 +224,13 @@ export default function Leaderboard({
               >
                 <span>{entry.value}</span>
                 {sortBy === "streak" && entry.value > 0 && (
-                  <span style={{ fontSize: 14 }}>{"\uD83D\uDD25"}</span>
+                  <span style={{ fontSize: 14 }}>{"🔥"}</span>
                 )}
                 {arrow && (
                   <span
                     style={{
                       fontSize: 14,
-                      color: arrow.includes("\u2191")
+                      color: arrow.includes("↑")
                         ? "var(--success)"
                         : "#e74c3c",
                     }}

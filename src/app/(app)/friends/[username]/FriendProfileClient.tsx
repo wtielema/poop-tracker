@@ -126,7 +126,7 @@ export default function FriendProfileClient({
             <div className="grid grid-cols-3 gap-3">
               <StatCard
                 value={`${data.stats.totalLogs}`}
-                emoji={"\uD83D\uDCA9"}
+                emoji={"💩"}
                 label="Total Logs"
               />
               <StatCard
@@ -134,13 +134,13 @@ export default function FriendProfileClient({
                 emoji={
                   data.stats.currentStreak > 0
                     ? getStreakFire(data.stats.currentStreak)
-                    : "\uD83D\uDD25"
+                    : "🔥"
                 }
                 label="Streak"
               />
               <StatCard
                 value={`${data.stats.longestStreak}`}
-                emoji={"\uD83C\uDFC5"}
+                emoji={"🏅"}
                 label="Best Streak"
               />
             </div>
@@ -188,7 +188,7 @@ export default function FriendProfileClient({
                 boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
               }}
             >
-              <div style={{ fontSize: 32 }}>{"\uD83C\uDFC6"}</div>
+              <div style={{ fontSize: 32 }}>{"🏆"}</div>
               <p
                 className="mt-2"
                 style={{ fontSize: 14, color: "var(--muted)" }}
@@ -212,7 +212,7 @@ export default function FriendProfileClient({
                   height: 48,
                 }}
               >
-                {showMap ? "Hide Map" : `\u{1F5FA}\uFE0F View Map (${mapPins.length} pins)`}
+                {showMap ? "Hide Map" : `🗺️ View Map (${mapPins.length} pins)`}
               </button>
 
               {showMap && (
@@ -238,8 +238,8 @@ export default function FriendProfileClient({
             >
               <p style={{ fontSize: 13, color: "var(--muted)" }}>
                 {mapAllowed
-                  ? "\u{1F5FA}\uFE0F No geotagged logs yet"
-                  : "\u{1F512} Map not shared"}
+                  ? "🗺️ No geotagged logs yet"
+                  : "🔒 Map not shared"}
               </p>
             </div>
           )}
@@ -254,7 +254,7 @@ export default function FriendProfileClient({
               boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
             }}
           >
-            <div style={{ fontSize: 40 }}>{"\uD83D\uDD12"}</div>
+            <div style={{ fontSize: 40 }}>{"🔒"}</div>
             <p
               className="mt-3 font-medium"
               style={{ fontSize: 14, color: "var(--muted)" }}

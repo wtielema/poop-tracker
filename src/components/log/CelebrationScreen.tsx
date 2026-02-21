@@ -177,7 +177,7 @@ export default function CelebrationScreen({
           boxShadow: "0 4px 12px rgba(245, 197, 66, 0.35)",
         }}
       >
-        Nice! \uD83D\uDCAA
+        Nice! 💪
       </button>
 
       {/* Share button */}

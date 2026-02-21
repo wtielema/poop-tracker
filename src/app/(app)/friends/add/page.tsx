@@ -219,7 +219,7 @@ export default function AddFriendPage() {
                     minWidth: 72,
                   }}
                 >
-                  {isSending ? "..." : isSent ? "Sent \u2713" : "Add"}
+                  {isSending ? "..." : isSent ? "Sent ✓" : "Add"}
                 </button>
               </div>
             );
@@ -266,7 +266,7 @@ export default function AddFriendPage() {
                   fontSize: 14,
                 }}
               >
-                {copied ? "Copied!" : "Copy Link \uD83D\uDCCB"}
+                {copied ? "Copied!" : "Copy Link 📋"}
               </button>
             </>
           ) : (

@@ -204,7 +204,7 @@ export default function LogPage() {
                 Loading...
               </span>
             ) : (
-              "Log It \uD83D\uDCA9"
+              "Log It 💩"
             )}
           </button>
 
@@ -213,7 +213,7 @@ export default function LogPage() {
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-visible">
               {/* Dropping poop emoji */}
               <span className="animate-poop-drop absolute" style={{ fontSize: 40, zIndex: 10 }}>
-                {"\uD83D\uDCA9"}
+                {"💩"}
               </span>
               {/* Water ripple circles */}
               <div

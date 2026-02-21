@@ -176,7 +176,7 @@ export default function FriendsList({
                   style={{ fontSize: 14, color: "var(--foreground)" }}
                 >
                   <span>{friend.streak}</span>
-                  <span>\uD83D\uDD25</span>
+                  <span>🔥</span>
                 </div>
               )}
             </button>
@@ -191,12 +191,12 @@ export default function FriendsList({
               boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
             }}
           >
-            <div style={{ fontSize: 36 }}>\uD83D\uDC4B</div>
+            <div style={{ fontSize: 36 }}>👋</div>
             <p
               className="mt-2 font-medium"
               style={{ fontSize: 14, color: "var(--muted)" }}
             >
-              No friends yet! Invite some to compete \uD83C\uDFC6
+              No friends yet! Invite some to compete 🏆
             </p>
           </div>
         )

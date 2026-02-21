@@ -146,12 +146,12 @@ export default function ChallengeList({
               boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
             }}
           >
-            <div style={{ fontSize: 40 }}>{"\uD83C\uDFAF"}</div>
+            <div style={{ fontSize: 40 }}>{"🎯"}</div>
             <p
               className="mt-2 font-medium"
               style={{ fontSize: 14, color: "var(--muted)" }}
             >
-              No challenges yet. Create one and invite friends! {"\uD83C\uDFAF"}
+              No challenges yet. Create one and invite friends! {"🎯"}
             </p>
           </div>
         )
@@ -171,7 +171,7 @@ export default function ChallengeList({
             fontSize: 14,
           }}
         >
-          + Create Challenge {"\uD83C\uDFAF"}
+          + Create Challenge {"🎯"}
         </button>
       )}
 
@@ -191,7 +191,7 @@ export default function ChallengeList({
                 display: "inline-block",
               }}
             >
-              {"\u25B6"}
+              {"▶"}
             </span>
             Show completed ({challenges.completed.length})
           </button>
@@ -230,7 +230,7 @@ export default function ChallengeList({
                         style={{ fontSize: 12, color: "var(--muted)" }}
                       >
                         {myProgress >= challenge.target
-                          ? "\u2705 Completed"
+                          ? "✅ Completed"
                           : `${myProgress}/${challenge.target}`}
                       </span>
                     </div>

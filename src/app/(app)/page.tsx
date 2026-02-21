@@ -6,10 +6,10 @@ import FriendFeed from "@/components/home/FriendFeed";
 
 function getGreeting(): string {
   const hour = new Date().getHours();
-  if (hour >= 5 && hour < 12) return "Good morning! \u2600\uFE0F";
-  if (hour >= 12 && hour < 17) return "Good afternoon! \uD83C\uDF24\uFE0F";
-  if (hour >= 17 && hour < 21) return "Good evening! \uD83C\uDF05";
-  return "Late night! \uD83C\uDF19";
+  if (hour >= 5 && hour < 12) return "Good morning! ☀️";
+  if (hour >= 12 && hour < 17) return "Good afternoon! 🌤️";
+  if (hour >= 17 && hour < 21) return "Good evening! 🌅";
+  return "Late night! 🌙";
 }
 
 export default async function Home() {

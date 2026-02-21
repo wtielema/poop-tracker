@@ -48,10 +48,10 @@ export default function GeotagToggle({ onLocation, onClear }: GeotagToggleProps)
   };
 
   const icons: Record<GeoState, string> = {
-    off: "\uD83D\uDCCD",
-    loading: "\u23F3",
-    success: "\uD83D\uDCCD",
-    error: "\u26A0\uFE0F",
+    off: "📍",
+    loading: "⏳",
+    success: "📍",
+    error: "⚠️",
   };
 
   return (

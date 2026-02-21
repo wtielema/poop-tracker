@@ -68,7 +68,7 @@ export default function FriendFeed({ events }: FriendFeedProps) {
           }}
           aria-label="Refresh feed"
         >
-          {"\uD83D\uDD04"}
+          {"🔄"}
         </button>
       </div>
 
@@ -86,7 +86,7 @@ export default function FriendFeed({ events }: FriendFeedProps) {
               }}
             >
               <div style={{ fontSize: 14, color: "var(--muted)", lineHeight: 1.6 }}>
-                No friends yet! Add some to see what they&apos;re up to {"\uD83E\uDD8B"}
+                No friends yet! Add some to see what they&apos;re up to {"🦋"}
               </div>
             </div>
           </Link>
@@ -101,7 +101,7 @@ export default function FriendFeed({ events }: FriendFeedProps) {
               className="mb-1 font-bold"
               style={{ fontSize: 13, color: "var(--accent-dim)" }}
             >
-              {"\uD83D\uDCA1"} Did you know?
+              {"💡"} Did you know?
             </div>
             <div style={{ fontSize: 14, color: "var(--foreground)", lineHeight: 1.5 }}>
               {getRandomFact()}

@@ -11,11 +11,11 @@ type Tab = {
 };
 
 const tabs: Tab[] = [
-  { icon: "\u{1F3E0}", label: "Home", route: "/" },
-  { icon: "\u{1F3C6}", label: "Board", route: "/board" },
-  { icon: "\u{1F4A9}", label: "Log", route: "/log", isCenter: true },
-  { icon: "\u{1F5FA}\uFE0F", label: "Map", route: "/map" },
-  { icon: "\u{1F464}", label: "Profile", route: "/profile" },
+  { icon: "🏠", label: "Home", route: "/" },
+  { icon: "🏆", label: "Board", route: "/board" },
+  { icon: "💩", label: "Log", route: "/log", isCenter: true },
+  { icon: "🗺️", label: "Map", route: "/map" },
+  { icon: "👤", label: "Profile", route: "/profile" },
 ];
 
 export default function BottomNav() {

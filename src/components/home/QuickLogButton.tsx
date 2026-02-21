@@ -18,7 +18,7 @@ export default function QuickLogButton() {
         }}
       >
         <span role="img" aria-label="Log">
-          {"\uD83D\uDCA9"}
+          {"💩"}
         </span>
       </Link>
       <span

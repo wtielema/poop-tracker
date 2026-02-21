@@ -1,6 +1,6 @@
 // Enum types
 export type BristolScale = 1 | 2 | 3 | 4 | 5 | 6 | 7;
-export type Mood = '\u{1F60C}' | '\u{1F60A}' | '\u{1F610}' | '\u{1F623}' | '\u{1F631}';
+export type Mood = '😌' | '😊' | '😐' | '😣' | '😱';
 export type MapVisibility = 'friends' | 'only_me' | 'nobody';
 export type FriendshipStatus = 'pending' | 'accepted';
 export type ChallengeType = 'streak' | 'count';

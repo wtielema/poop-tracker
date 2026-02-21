@@ -8,18 +8,18 @@ import type { MapVisibility } from "@/lib/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 const AVATAR_EMOJIS = [
-  "\uD83D\uDCA9",
-  "\uD83E\uDD84",
-  "\uD83D\uDC38",
-  "\uD83D\uDD25",
-  "\uD83D\uDC7B",
-  "\uD83C\uDF83",
-  "\uD83C\uDF08",
-  "\u2B50",
-  "\uD83C\uDF55",
-  "\uD83C\uDFAE",
-  "\uD83D\uDC36",
-  "\uD83C\uDF2E",
+  "💩",
+  "🦄",
+  "🐸",
+  "🔥",
+  "👻",
+  "🎃",
+  "🌈",
+  "⭐",
+  "🍕",
+  "🎮",
+  "🐶",
+  "🌮",
 ];
 
 const MAP_OPTIONS: { value: MapVisibility; label: string }[] = [
@@ -40,7 +40,7 @@ export default function SettingsPage() {
   }
 
   const [displayName, setDisplayName] = useState("");
-  const [avatarEmoji, setAvatarEmoji] = useState("\uD83D\uDCA9");
+  const [avatarEmoji, setAvatarEmoji] = useState("💩");
   const [mapVisibility, setMapVisibility] = useState<MapVisibility>("friends");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

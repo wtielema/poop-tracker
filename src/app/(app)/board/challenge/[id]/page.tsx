@@ -20,7 +20,7 @@ export default async function ChallengeDetailPage({
           className="inline-flex items-center gap-1 font-semibold transition-opacity hover:opacity-80"
           style={{ fontSize: 14, color: "var(--primary)" }}
         >
-          {"\u2190"} Back to Board
+          {"←"} Back to Board
         </Link>
         <div
           className="rounded-xl p-8 text-center"
@@ -29,7 +29,7 @@ export default async function ChallengeDetailPage({
             boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
           }}
         >
-          <div style={{ fontSize: 48 }}>{"\uD83D\uDD0D"}</div>
+          <div style={{ fontSize: 48 }}>{"🔍"}</div>
           <p
             className="mt-3 font-medium"
             style={{ fontSize: 15, color: "var(--muted)" }}
@@ -48,7 +48,7 @@ export default async function ChallengeDetailPage({
         className="inline-flex items-center gap-1 font-semibold transition-opacity hover:opacity-80"
         style={{ fontSize: 14, color: "var(--primary)" }}
       >
-        {"\u2190"} Back to Board
+        {"←"} Back to Board
       </Link>
 
       <ChallengeDetailClient

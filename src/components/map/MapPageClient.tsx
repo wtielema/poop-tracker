@@ -16,7 +16,7 @@ const PoopMap = dynamic(() => import("@/components/map/PoopMap"), {
       }}
     >
       <div className="text-center">
-        <div style={{ fontSize: 40 }}>{"\u{1F5FA}\uFE0F"}</div>
+        <div style={{ fontSize: 40 }}>{"🗺️"}</div>
         <p
           className="mt-2"
           style={{ fontSize: 14, color: "var(--muted)" }}
@@ -45,7 +45,7 @@ export default function MapPageClient({
         className="flex flex-col items-center justify-center text-center px-8"
         style={{ height: "calc(100vh - 180px)" }}
       >
-        <div style={{ fontSize: 64 }}>{"\u{1F4A9}"}</div>
+        <div style={{ fontSize: 64 }}>{"💩"}</div>
         <h2
           className="mt-4 font-bold"
           style={{ fontSize: 20, color: "var(--foreground)" }}
@@ -56,7 +56,7 @@ export default function MapPageClient({
           className="mt-2"
           style={{ fontSize: 15, color: "var(--muted)", maxWidth: 280 }}
         >
-          Enable {"\u{1F4CD}"} when logging to see your poop map {"\u{1F5FA}\uFE0F"}
+          Enable {"📍"} when logging to see your poop map {"🗺️"}
         </p>
         <div
           className="mt-6 rounded-xl px-4 py-3 text-left"
@@ -70,7 +70,7 @@ export default function MapPageClient({
             className="mb-1 font-bold"
             style={{ fontSize: 13, color: "var(--accent-dim)" }}
           >
-            {"\uD83D\uDCA1"} Did you know?
+            {"💡"} Did you know?
           </div>
           <div style={{ fontSize: 14, color: "var(--foreground)", lineHeight: 1.5 }}>
             {getRandomFact()}
@@ -98,7 +98,7 @@ export default function MapPageClient({
               color: "var(--foreground)",
             }}
           >
-            {"\u{1F465}"} Show friends
+            {"👥"} Show friends
           </span>
           <button
             type="button"
@@ -143,11 +143,11 @@ export default function MapPageClient({
         }}
       >
         <span style={{ fontSize: 13, color: "var(--muted)" }}>
-          {"\u{1F4CD}"} {pins.length} pin{pins.length !== 1 ? "s" : ""}
+          {"📍"} {pins.length} pin{pins.length !== 1 ? "s" : ""}
         </span>
         {showFriends && friendPins.length > 0 && (
           <span style={{ fontSize: 13, color: "var(--muted)" }}>
-            {"\u{1F465}"} {friendPins.length} friend pin
+            {"👥"} {friendPins.length} friend pin
             {friendPins.length !== 1 ? "s" : ""}
           </span>
         )}

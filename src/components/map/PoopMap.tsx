@@ -33,7 +33,7 @@ interface PoopMapProps {
 function createPoopIcon(hasBuddy: boolean) {
   return L.divIcon({
     html: `<div style="font-size: 28px; line-height: 1; position: relative; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
-      \u{1F4A9}${hasBuddy ? '<span style="position: absolute; top: -8px; right: -12px; font-size: 16px;">\u{1F91D}</span>' : ""}
+      💩${hasBuddy ? '<span style="position: absolute; top: -8px; right: -12px; font-size: 16px;">🤝</span>' : ""}
     </div>`,
     className: "poop-marker",
     iconSize: [36, 36],
@@ -196,7 +196,7 @@ export default function PoopMap({
                       textAlign: "center",
                     }}
                   >
-                    {"\u{1F91D}"} Poop Buddies! A friend was nearby
+                    {"🤝"} Poop Buddies! A friend was nearby
                   </div>
                 )}
               </div>

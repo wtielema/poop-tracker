@@ -88,7 +88,7 @@ export default function InvitePage() {
         {state === "loading" && (
           <div>
             <div className="mb-4 text-5xl" style={{ animationDuration: "2s" }}>
-              {"\uD83D\uDCA9"}
+              {"💩"}
             </div>
             <p style={{ color: "var(--muted)", fontSize: 16 }}>
               Processing invite...
@@ -104,7 +104,7 @@ export default function InvitePage() {
               boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
             }}
           >
-            <div className="mb-4 text-5xl">{"\uD83D\uDCA9"}</div>
+            <div className="mb-4 text-5xl">{"💩"}</div>
             <h1
               className="mb-2 text-xl font-bold"
               style={{ color: "var(--foreground)" }}
@@ -145,7 +145,7 @@ export default function InvitePage() {
               className="mb-2 text-xl font-bold"
               style={{ color: "var(--foreground)" }}
             >
-              Friend request sent to {displayName}! {"\uD83C\uDF89"}
+              Friend request sent to {displayName}! {"🎉"}
             </h1>
             <p className="mb-6" style={{ color: "var(--muted)", fontSize: 14 }}>
               {"They'll"} see your request next time they check their profile
@@ -181,7 +181,7 @@ export default function InvitePage() {
               className="mb-2 text-xl font-bold"
               style={{ color: "var(--foreground)" }}
             >
-              {"You're"} already friends with {displayName}! {"\uD83E\uDD1D"}
+              {"You're"} already friends with {displayName}! {"🤝"}
             </h1>
             <p className="mb-6" style={{ color: "var(--muted)", fontSize: 14 }}>
               Check out their profile to see their stats
@@ -210,7 +210,7 @@ export default function InvitePage() {
               boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
             }}
           >
-            <div className="mb-4 text-5xl">{"\uD83D\uDE04"}</div>
+            <div className="mb-4 text-5xl">{"😄"}</div>
             <h1
               className="mb-2 text-xl font-bold"
               style={{ color: "var(--foreground)" }}
@@ -244,7 +244,7 @@ export default function InvitePage() {
               boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
             }}
           >
-            <div className="mb-4 text-5xl">{"\u2753"}</div>
+            <div className="mb-4 text-5xl">{"❓"}</div>
             <h1
               className="mb-2 text-xl font-bold"
               style={{ color: "var(--foreground)" }}
@@ -278,7 +278,7 @@ export default function InvitePage() {
               boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
             }}
           >
-            <div className="mb-4 text-5xl">{"\u26A0\uFE0F"}</div>
+            <div className="mb-4 text-5xl">{"⚠️"}</div>
             <h1
               className="mb-2 text-xl font-bold"
               style={{ color: "var(--foreground)" }}

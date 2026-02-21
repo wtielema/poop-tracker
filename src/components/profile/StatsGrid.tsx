@@ -38,42 +38,42 @@ export default function StatsGrid({ stats }: StatsGridProps) {
       {/* Total Logs */}
       <StatCard
         value={`${stats.totalLogs}`}
-        emoji="\uD83D\uDCA9"
+        emoji="💩"
         label="Total Logs"
       />
 
       {/* Current Streak */}
       <StatCard
         value={`${stats.currentStreak}`}
-        emoji={stats.currentStreak > 0 ? getStreakFire(stats.currentStreak) : "\uD83D\uDD25"}
+        emoji={stats.currentStreak > 0 ? getStreakFire(stats.currentStreak) : "🔥"}
         label="Current Streak"
       />
 
       {/* Longest Streak */}
       <StatCard
         value={`${stats.longestStreak}`}
-        emoji="\uD83C\uDFC5"
+        emoji="🏅"
         label="Longest Streak"
       />
 
       {/* Top Type */}
       <StatCard
         value={bristolInfo ? bristolInfo.label : "--"}
-        emoji={bristolInfo ? bristolInfo.emoji : "\u2753"}
+        emoji={bristolInfo ? bristolInfo.emoji : "❓"}
         label="Top Type"
       />
 
       {/* Avg Duration */}
       <StatCard
         value={formatDuration(stats.avgDuration)}
-        emoji="\u23F1\uFE0F"
+        emoji="⏱️"
         label="Avg Duration"
       />
 
       {/* Fav Mood */}
       <StatCard
         value={stats.topMood ? `${stats.topMood.count}x` : "--"}
-        emoji={stats.topMood ? stats.topMood.emoji : "\uD83E\uDD37"}
+        emoji={stats.topMood ? stats.topMood.emoji : "🤷"}
         label="Fav Mood"
       />
     </div>

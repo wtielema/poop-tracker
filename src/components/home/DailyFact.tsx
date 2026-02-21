@@ -15,7 +15,7 @@ export default function DailyFact({ fact }: DailyFactProps) {
         className="mb-1 font-bold"
         style={{ fontSize: 13, color: "var(--accent-dim)" }}
       >
-        {"\uD83D\uDCA1"} Did you know?
+        {"💡"} Did you know?
       </div>
       <div style={{ fontSize: 14, color: "var(--foreground)", lineHeight: 1.5 }}>
         {fact}

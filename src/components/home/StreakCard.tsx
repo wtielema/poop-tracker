@@ -69,7 +69,7 @@ export default function StreakCard({ streak, loggedToday }: StreakCardProps) {
         >
           {streak === 0
             ? "Start your streak today!"
-            : "Log today to keep your streak! \uD83D\uDCAA"}
+            : "Log today to keep your streak! 💪"}
         </div>
       )}
     </div>
