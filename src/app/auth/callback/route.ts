@@ -7,6 +7,7 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
+  const next = searchParams.get("next") ?? "/";
 
   const supabase = await createClient();
 
@@ -14,25 +15,28 @@ export async function GET(request: Request) {
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
-      return NextResponse.redirect(`${origin}/login`);
+      console.error("PKCE exchange error:", error.message);
+      return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`);
     }
   }
   // Handle email link flow (token_hash + type)
   else if (token_hash && type) {
     const { error } = await supabase.auth.verifyOtp({ token_hash, type });
     if (error) {
-      return NextResponse.redirect(`${origin}/login`);
+      console.error("OTP verify error:", error.message);
+      return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`);
     }
   }
-  // No auth params at all
+  // No auth params at all — redirect to login with debug info
   else {
-    return NextResponse.redirect(`${origin}/login`);
+    const params = Array.from(searchParams.keys()).join(",") || "none";
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent("No auth params. Received: " + params)}`);
   }
 
   // Auth succeeded — check if user has a profile with username
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    return NextResponse.redirect(`${origin}/login`);
+    return NextResponse.redirect(`${origin}/login?error=no_user_after_auth`);
   }
 
   const { data: profile } = await supabase
@@ -45,5 +49,5 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/onboarding`);
   }
 
-  return NextResponse.redirect(`${origin}/`);
+  return NextResponse.redirect(`${origin}${next}`);
 }
