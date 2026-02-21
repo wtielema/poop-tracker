@@ -2,8 +2,22 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { sendFriendRequest } from "@/app/actions/friends";
 import { STREAK_THRESHOLDS } from "@/lib/constants";
+import type { MapPin } from "@/app/actions/map";
+
+const PoopMap = dynamic(() => import("@/components/map/PoopMap"), {
+  ssr: false,
+  loading: () => (
+    <div
+      className="flex items-center justify-center rounded-xl"
+      style={{ height: 300, background: "var(--surface)" }}
+    >
+      <p style={{ fontSize: 14, color: "var(--muted)" }}>Loading map...</p>
+    </div>
+  ),
+});
 
 interface FriendAchievement {
   slug: string;
@@ -39,12 +53,17 @@ function getStreakFire(streak: number): string {
 
 export default function FriendProfileClient({
   data,
+  mapPins,
+  mapAllowed,
 }: {
   data: FriendProfileData;
+  mapPins: MapPin[];
+  mapAllowed: boolean;
 }) {
   const router = useRouter();
   const [requestSent, setRequestSent] = useState(data.pendingRequest);
   const [sending, setSending] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   async function handleSendRequest() {
     setSending(true);
@@ -179,18 +198,51 @@ export default function FriendProfileClient({
             </div>
           )}
 
-          {/* Map note */}
-          <div
-            className="rounded-xl p-4 text-center"
-            style={{
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-            }}
-          >
-            <p style={{ fontSize: 13, color: "var(--muted)" }}>
-              {"\uD83D\uDDFA\uFE0F"} View their poop map on the Map tab
-            </p>
-          </div>
+          {/* Map section */}
+          {mapAllowed && mapPins.length > 0 ? (
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowMap(!showMap)}
+                className="w-full rounded-xl py-3 font-bold transition-all hover:opacity-90"
+                style={{
+                  background: showMap ? "var(--border)" : "var(--primary)",
+                  color: showMap ? "var(--foreground)" : "#FFFFFF",
+                  fontSize: 15,
+                  height: 48,
+                }}
+              >
+                {showMap ? "Hide Map" : `\u{1F5FA}\uFE0F View Map (${mapPins.length} pins)`}
+              </button>
+
+              {showMap && (
+                <div
+                  className="mt-3 rounded-xl overflow-hidden"
+                  style={{ height: 300 }}
+                >
+                  <PoopMap
+                    pins={mapPins}
+                    friendPins={[]}
+                    showFriends={false}
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div
+              className="rounded-xl p-4 text-center"
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              <p style={{ fontSize: 13, color: "var(--muted)" }}>
+                {mapAllowed
+                  ? "\u{1F5FA}\uFE0F No geotagged logs yet"
+                  : "\u{1F512} Map not shared"}
+              </p>
+            </div>
+          )}
         </>
       ) : (
         <>
